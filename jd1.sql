@@ -1,0 +1,49 @@
+CREATE DATABASE bank
+GO
+ 
+USE bank
+GO
+ 
+CREATE TABLE Users(
+UserID int IDENTITY(1,1) PRIMARY KEY
+,Imie nchar(50) NOT NULL
+,Nazwisko nchar(50) NOT NULL
+,Pesel char(11) UNIQUE NOT NULL
+,NrTel char(9) UNIQUE NOT NULL
+,Haslo nchar(100) NOT NULL
+,Saldo money NOT NULL
+)
+ 
+CREATE TABLE Przelewy(
+PrzelewID int IDENTITY(1,1) PRIMARY KEY
+,UserID int NOT NULL
+,DataPrzelewu Date NOT NULL
+,NaKonto char(30) NOT NULL
+,Kwota money NOT NULL
+ 
+CONSTRAINT PRZELEWIK FOREIGN KEY(UserID)
+	REFERENCES Users(UserID)
+	ON UPDATE CASCADE
+)
+ 
+CREATE TABLE Karty(
+UserID int NOT NULL
+,NrKarty char(16) NOT NULL PRIMARY KEY
+,DataWaznosci date NOT NULL
+,CVV char(3) NOT NULL
+CONSTRAINT KARTKA FOREIGN KEY(UserID)
+	REFERENCES Users(UserID)
+	ON UPDATE CASCADE
+	ON DELETE CASCADE
+)
+ 
+CREATE TABLE Adresy(
+UserID int NOT NULL
+,Adres char(50) NOT NULL
+,Miasto char(50) NOT NULL
+,KodPocztowy char(6) NOT NULL
+,
+	CONSTRAINT ADRESIK FOREIGN KEY(UserID)
+	REFERENCES Users(UserID)
+	ON UPDATE CASCADE
+)
